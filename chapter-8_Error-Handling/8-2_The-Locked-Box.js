@@ -21,6 +21,8 @@ function withBoxUnlocked(body) {
   }
   try {
     body();
+  } catch (err) {
+    throw err;
   } finally {
     if (boxLockedOnEntry) {
       box.lock();
@@ -36,8 +38,8 @@ try {
   withBoxUnlocked(() => {
     throw new Error('Pirates on the horizon! Abort!');
   });
-} catch (e) {
-  console.log(`Error raised: ${e}`);
+} catch (err) {
+  console.log(`Error raised: ${err}`);
 }
 console.log(box.locked);
 // → true
