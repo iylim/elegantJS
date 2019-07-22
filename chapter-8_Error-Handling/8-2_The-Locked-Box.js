@@ -15,14 +15,25 @@ const box = {
 
 function withBoxUnlocked(body) {
   // Your code here.
+  const boxLockedOnEntry = box.locked;
+  if (boxLockedOnEntry) {
+    box.unlock();
+  }
+  try {
+    body();
+  } finally {
+    if (boxLockedOnEntry) {
+      box.lock();
+    }
+  }
 }
 
-withBoxUnlocked(function() {
+withBoxUnlocked(() => {
   box.content.push('gold piece');
 });
 
 try {
-  withBoxUnlocked(function() {
+  withBoxUnlocked(() => {
     throw new Error('Pirates on the horizon! Abort!');
   });
 } catch (e) {
